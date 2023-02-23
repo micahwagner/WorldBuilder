@@ -25,7 +25,7 @@ Grid.prototype.show = function() {
 	// draw lines
 	ctx.lineWidth = world.transformLength(0.5);
 	for (let i = 0; i < this.width + 1; i++) {
-		let lineCoords = world.transformPoint((this.cellSize * i) - this.cellSize/2, -this.cellSize/2, canvas);
+		let lineCoords = world.worldToScreen((this.cellSize * i) - this.cellSize/2, -this.cellSize/2, canvas);
 		ctx.beginPath();
 		ctx.moveTo(lineCoords.x, lineCoords.y);
 		ctx.lineTo(lineCoords.x, lineCoords.y + screenCellSize * this.height);
@@ -33,7 +33,7 @@ Grid.prototype.show = function() {
 	}
 
 	for (let i = 0; i < this.height + 1; i++) {
-		let lineCoords = world.transformPoint(-this.cellSize/2, (this.cellSize * i) - this.cellSize/2, canvas);
+		let lineCoords = world.worldToScreen(-this.cellSize/2, (this.cellSize * i) - this.cellSize/2, canvas);
 		ctx.beginPath();
 		ctx.moveTo(lineCoords.x, lineCoords.y);
 		ctx.lineTo(lineCoords.x + screenCellSize * this.width, lineCoords.y);

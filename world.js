@@ -7,7 +7,7 @@ let world = {
 };
 
 //transforms a point in world space to screen space
-world.transformPoint = function(x,y,canvas){
+world.worldToScreen = function(x, y, canvas) {
 	// this translates the position given relative to the world origin
 	// add half of screen dimentions so 0, 0  is in center of screen, then add position offset
 	let translation_X = (world.transform.originX + canvas.width / 2) + x;
@@ -18,12 +18,30 @@ world.transformPoint = function(x,y,canvas){
 	// to the given the point, then we scale it by the scale factor (if we didn't do this, 
 	// the point would be at a constant position on the screen, more you zoom in the more you want objects to go away from the center, vice versa)
 	// then add this vector relative to the senter of the screen
-	let finalX = canvas.width/2 + (translation_X - canvas.width/2) * world.transform.scaleFactor;
-	let finalY = canvas.height/2 + (translation_Y - canvas.height/2) * world.transform.scaleFactor;
+	let finalX = canvas.width / 2 + (translation_X - canvas.width / 2) * world.transform.scaleFactor;
+	let finalY = canvas.height / 2 + (translation_Y - canvas.height / 2) * world.transform.scaleFactor;
 
-	return {x:finalX, y:finalY};
-}
+	return {
+		x: finalX,
+		y: finalY
+	};
+};
+
+// this does the opposite of the function above (used for mouse positions, and mapping that to grid indexes)
+// the functions in this is derived from solving for x in the worldToScreens equations
+world.screenToWorld = function(screenX, screenY, canvas) {
+
+	let worldX = ((screenX - canvas.width / 2) / world.transform.scaleFactor) - (world.transform.originX + canvas.width / 2) + canvas.width/2;
+	let worldY = ((screenY - canvas.height / 2) / world.transform.scaleFactor) - (world.transform.originY + canvas.height / 2) + canvas.height/2;
+
+	return {
+		x: worldX,
+		y: worldY
+	};
+
+
+};
 
 world.transformLength = function(length) {
 	return length * world.transform.scaleFactor;
-}
+};

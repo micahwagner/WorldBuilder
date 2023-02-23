@@ -22,7 +22,7 @@ Rectangle.prototype.transform = function() {
 
 	// this is the final position of box
 	// subtract by the widthScale/2 and heightScale/2 so that fillRect properly draws rectanlge relative to center
-	let screenCoords = world.transformPoint(this.x,this.y, this.screen.canvas);
+	let screenCoords = world.worldToScreen(this.x,this.y, this.screen.canvas);
 	this.screenX = screenCoords.x - this.screenWidth / 2;
 	this.screenY = screenCoords.y - this.screenHeight / 2;
 	return this;
