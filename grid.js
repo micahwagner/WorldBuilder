@@ -1,69 +1,77 @@
-function Grid(width, height, cellSize, screen) {
+function Grid(width, height, screen) {
+	this.x = 0;
+	this.y = 0;
+	this.screen = screen;
+
 	this.width = width;
 	this.height = height;
-	this.cellSize = cellSize;
-	this.cells = {};
 
-	this.screen = screen;
-}
+	this.data = [];
 
-
-Grid.prototype.show = function() {
-
-	let ctx = this.screen.drawingContext;
-	let canvas = this.screen.canvas;
-	// fill squares 
-	for (const color in this.cells) {
-		ctx.fillStyle = color;
-		for (let i = 0; i < this.cells[color].length; i++) {
-			this.cells[color][i].rect.show();
-		}
+	for (let i = 0; i < this.width * this.height; i++) {
+		this.data[i] = 0;
 	}
 
-	let screenCellSize = world.transformLength(this.cellSize);
+	this.screenX;
+	this.screenY;
 
-	// draw lines
-	ctx.lineWidth = world.transformLength(0.5);
-	for (let i = 0; i < this.width + 1; i++) {
-		let lineCoords = world.worldToScreen((this.cellSize * i) - this.cellSize/2, -this.cellSize/2, canvas);
-		ctx.beginPath();
-		ctx.moveTo(lineCoords.x, lineCoords.y);
-		ctx.lineTo(lineCoords.x, lineCoords.y + screenCellSize * this.height);
-		ctx.stroke();
-	}
+	this.pixelWidth;
+	this.pixelHeight;
 
-	for (let i = 0; i < this.height + 1; i++) {
-		let lineCoords = world.worldToScreen(-this.cellSize/2, (this.cellSize * i) - this.cellSize/2, canvas);
-		ctx.beginPath();
-		ctx.moveTo(lineCoords.x, lineCoords.y);
-		ctx.lineTo(lineCoords.x + screenCellSize * this.width, lineCoords.y);
-		ctx.stroke();
-	}
-
+	this.transform();
 }
 
 Grid.prototype.transform = function() {
-	for (const color in this.cells) {
-		for (let i = 0; i < this.cells[color].length; i++) {
-			this.cells[color][i].rect.transform();
-		}
-	}
-}
+	// scale box width and height by scale factor
+	this.pixelWidth = world.transformLength(this.width);
+	this.pixelHeight = world.transformLength(this.height);
 
-Grid.prototype.addCell = function(x, y, color) {
-	if (this.cells[color] === undefined) {
-		this.cells[color] = [];
-	}
-
-	this.cells[color].push({
-		rect: new Rectangle(
-			x * this.cellSize,
-			y * this.cellSize,
-			this.cellSize,
-			this.cellSize,
-			this.screen),
-		x: x,
-		y: y
-	});
+	// this is the final position of box
+	// subtract by the widthScale/2 and heightScale/2 so that fillRect properly draws rectanlge relative to center
+	let screenCoords = world.worldToScreen(this.x, this.y, this.screen.htmlCanvasElement);
+	this.screenX = screenCoords.x - this.pixelWidth / 2;
+	this.screenY = screenCoords.y - this.pixelHeight / 2;
 	return this;
+};
+
+Grid.prototype.show = function() {
+
+	let topLeftX = this.screenX;
+	let topLeftY = this.screenY;
+
+	let bottomRightX = topLeftX + this.pixelWidth;
+	let bottomRightY = topLeftY + this.pixelHeight;
+
+	let step = 1 / world.transform.scaleFactor;
+
+	topLeftX = Math.floor(clamp(topLeftX, 0, this.screen.renderWidth));
+	topLeftY = Math.floor(clamp(topLeftY, 0, this.screen.renderHeight));
+
+	bottomRightX = Math.floor(clamp(bottomRightX, 0, this.screen.renderWidth));
+	bottomRightY = Math.floor(clamp(bottomRightY, 0, this.screen.renderHeight));
+
+	let gridX = this.screenX < 0 ? step * Math.abs(this.screenX) : 0;
+	let gridXInitial = gridX;
+	let gridY = this.screenY < 0 ? step * Math.abs(this.screenY) : 0;
+
+
+	for (let y = topLeftY; y < bottomRightY; y++) {
+		for (let x = topLeftX; x < bottomRightX; x++) {
+			let screenIndex = (x + y * this.screen.renderWidth) * 4;
+			let gridIndex = Math.floor(gridX) + Math.floor(gridY) * this.width;
+			let color = intToRGBA(this.data[gridIndex] || 0xDCDCDCFF);
+			this.screen.pixels[screenIndex] = color.R;
+			this.screen.pixels[screenIndex + 1] = color.G;
+			this.screen.pixels[screenIndex + 2] = color.B;
+			this.screen.pixels[screenIndex + 3] = color.A;
+			gridX += step;
+		}
+		gridX = gridXInitial;
+		gridY += step;
+	}
+};
+
+
+function clamp(num, min, max) {
+	return Math.min(Math.max(num, min), max);
 }
