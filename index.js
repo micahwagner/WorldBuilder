@@ -4,11 +4,11 @@ let canvasHeight = 700;
 let screen = new Screen(700, 700, 1);
 screen.setParent(document.body);
 let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
-let grid = new Grid(200, 200, screen);
-for (var y = 0; y < 200; y++) {
-	for (var x = 0; x < 200; x++) {
+let grid = new Grid(2000, 2000, screen);
+for (var y = 0; y < 2000; y++) {
+	for (var x = 0; x < 2000; x++) {
 		let color = colors[Math.floor(Math.random() * 4)];
-		if (Math.random() < 0.4) grid.data[x + y * 200] = color;
+		if (Math.random() < 0.4) grid.data[x + y * 2000] = color;
 	}
 }
 

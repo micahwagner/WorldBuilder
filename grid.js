@@ -2,6 +2,7 @@ function Grid(width, height, screen) {
 	this.x = 0;
 	this.y = 0;
 	this.screen = screen;
+	this.stroke = 0.1;
 
 	this.width = width;
 	this.height = height;
@@ -69,9 +70,19 @@ Grid.prototype.show = function() {
 		gridX = gridXInitial;
 		gridY += step;
 	}
+
+
+	let xTerminal = Math.floor(this.screenX + this.pixelWidth);
+	let yTerminal = Math.floor(this.screenY + this.pixelHeight);
+	let lineStroke = Math.floor(world.transform.scaleFactor * this.stroke);
+
+	for (let y = 0; y < this.height + 1; y++) {
+		drawHorizontalLine(Math.floor(this.screenY + world.transform.scaleFactor * y), Math.floor(this.screenX), xTerminal, lineStroke, this.screen);		
+	}
+
+	for (let x = 0; x < this.width + 1; x++) {
+		drawVerticalLine(Math.floor(this.screenX + world.transform.scaleFactor * x), Math.floor(this.screenY), yTerminal, lineStroke, this.screen);	
+	}
+
 };
 
-
-function clamp(num, min, max) {
-	return Math.min(Math.max(num, min), max);
-}
