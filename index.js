@@ -4,16 +4,18 @@ let canvasHeight = 700;
 let screen = new Screen(700, 700, 1);
 screen.setParent(document.body);
 let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
-let grid = new Grid(2000, 2000, screen);
-for (var y = 0; y < 2000; y++) {
-	for (var x = 0; x < 2000; x++) {
+let grid = new Grid(200, 200, screen);
+for (var y = 0; y < 200; y++) {
+	for (var x = 0; x < 200; x++) {
 		let color = colors[Math.floor(Math.random() * 4)];
-		if (Math.random() < 0.4) grid.data[x + y * 2000] = color;
+		if (Math.random() < 0.4) grid.data[x + y * 200] = color;
 	}
 }
 
 
 let sensitivity = 0.0005;
+
+let mouseIndex = 0;
 
 screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 	if (mouseDown && keysDown["Shift"]) {
@@ -23,15 +25,10 @@ screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 		grid.transform();
 	}
 
-	if (mouseDown && !keysDown["Shift"]) {
-		let mouseWorldCoords = world.screenToWorld(e.clientX, e.clientY, screen.htmlCanvasElement);
-
-		mouseWorldCoords.x = Math.floor(mouseWorldCoords.x / grid.cellSize);
-		mouseWorldCoords.y = Math.floor(mouseWorldCoords.y / grid.cellSize);
-
-		if (mouseWorldCoords.x > grid.width || mouseWorldCoords.x < 0 || mouseWorldCoords.y > grid.width || mouseWorldCoords.y < 0) return;
-
-	}
+	let mouseWorldCoords = world.screenToWorld(e.clientX, e.clientY, screen.htmlCanvasElement);
+	mouseWorldCoords.x += grid.width / 2;
+	mouseWorldCoords.y += grid.height / 2;
+	mouseIndex = Math.floor(mouseWorldCoords.x) + Math.floor(mouseWorldCoords.y) * grid.width;
 });
 
 screen.htmlCanvasElement.addEventListener("wheel", function(e) {
@@ -51,6 +48,22 @@ let pastFrameCount = 0;
 function render() {
 	// c.drawingContext.globalAlpha = 0;
 	frameCount++;
+
+	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height) {
+
+		if (mouseDown && !keysDown["Shift"]) {
+			if (keysDown["b"]) {
+				grid.data[mouseIndex] = 0x0000FFFF;
+			} else if (keysDown["g"]) {
+				grid.data[mouseIndex] = 0x00FF00FF;
+			} else if (keysDown["r"]) {
+				grid.data[mouseIndex] = 0xFF0000FF;
+			} else if (keysDown[" "]) {
+				grid.data[mouseIndex] = 0;
+			}
+		}
+	}
+
 	screen.clear();
 	screen.drawingContext.fillStyle = "lightgrey";
 	screen.drawingContext.fillRect(0, 0, canvasWidth, canvasHeight);
