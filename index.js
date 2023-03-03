@@ -4,11 +4,15 @@ let canvasHeight = 700;
 let screen = new Screen(700, 700, 1);
 screen.setParent(document.body);
 let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
-let grid = new Grid(100, 100, screen);
-for (var y = 0; y < 100; y++) {
-	for (var x = 0; x < 100; x++) {
+
+let grid_width = 100;
+let grid_height = 100;
+let grid = new Grid(grid_width, grid_height, screen);
+grid.data[0] = 0x0000FFFF;
+for (var y = 0; y < grid_height; y++) {
+	for (var x = 0; x < grid_width; x++) {
 		let color = colors[Math.floor(Math.random() * 4)];
-		if (Math.random() < 0.3) grid.data[x + y * 100] = color;
+		if (Math.random() < 0.3) grid.data[x + y * grid_width] = color;
 	}
 }
 
@@ -39,7 +43,7 @@ let raycastScene = new Pseudo3D.Scene({
 
 });
 
-let raycastScreen = new Pseudo3D.Screen(700, 700, 0.4);
+let raycastScreen = new Pseudo3D.Screen(700, 700, 0.5);
 
 raycastScreen.setParent(document.body);
 
@@ -52,7 +56,7 @@ let camera = new Pseudo3D.Camera({
 
 
 let sensitivity = 0.0005;
-let moveSpeed = 0.1;
+let moveSpeed = 0.05;
 
 let mouseIndex = 0;
 
@@ -139,18 +143,55 @@ function render() {
 		camera.orientation.position.z -= 0.1;
 	}
 
-	screen.clear();
-	screen.drawingContext.fillStyle = "lightgrey";
-	screen.drawingContext.fillRect(0, 0, canvasWidth, canvasHeight);
-	screen.setPixels();
+	drawBackground(screen, "lightgrey")
 	grid.show();
+
 	screen.update();
 
+	drawPlayer(screen, "black", "magenta");
+
+	screen.update();
+
+	drawRaycaster();
+	requestAnimationFrame(render);
+}
+
+
+function drawBackground(screen, color) {
+	screen.clear();
+	screen.drawingContext.fillStyle = color;
+	screen.drawingContext.fillRect(0, 0, canvasWidth, canvasHeight);
+	screen.setPixels();
+}
+
+function drawPlayer(screen, playerColor, dirColor) {
+
+	let cameraCoords = world.worldToScreen(camera.orientation.position.x - grid.width/2, camera.orientation.position.y - grid.height/2, screen.htmlCanvasElement);
+	let dirVectCoords = world.worldToScreen((camera.orientation.position.x - grid.width/2) + camera.orientation.direction.x, camera.orientation.position.y - grid.height/2 + camera.orientation.direction.y, screen.htmlCanvasElement);
+
+	//draw player
+	screen.drawingContext.beginPath();
+	screen.drawingContext.arc(cameraCoords.x, cameraCoords.y, world.transformLength(0.3), 0,  2*Math.PI);
+	screen.drawingContext.fillStyle = playerColor;
+	screen.drawingContext.fill();
+	screen.drawingContext.closePath();
+
+	// draw direction
+	screen.drawingContext.beginPath();
+	screen.drawingContext.lineTo(cameraCoords.x , cameraCoords.y);
+	screen.drawingContext.lineTo(dirVectCoords.x ,dirVectCoords.y );
+	screen.drawingContext.strokeStyle = dirColor;
+	screen.drawingContext.stroke();
+	screen.drawingContext.closePath();
+	screen.setPixels();
+}
+
+function drawRaycaster() {
 	raycastScreen.clear();
 	Pseudo3D.Renderer.render(raycastScreen, raycastScene, camera);
 	raycastScreen.update();
-	requestAnimationFrame(render);
 }
+
 
 render();
 

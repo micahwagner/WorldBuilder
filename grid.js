@@ -76,6 +76,8 @@ Grid.prototype.show = function() {
 	let yTerminal = Math.floor(this.screenY + this.pixelHeight);
 	let lineStroke = Math.floor(world.transform.scaleFactor * this.stroke);
 
+	if(lineStroke == 0) return;
+
 	for (let y = 0; y < this.height + 1; y++) {
 		drawHorizontalLine(Math.floor(this.screenY + world.transform.scaleFactor * y), Math.floor(this.screenX), xTerminal, lineStroke, this.screen);		
 	}
