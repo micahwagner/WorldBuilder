@@ -88,3 +88,32 @@ Grid.prototype.show = function() {
 
 };
 
+
+function drawBackground(screen, color) {
+	screen.clear();
+	screen.drawingContext.fillStyle = color;
+	screen.drawingContext.fillRect(0, 0, canvasWidth, canvasHeight);
+	screen.setPixels();
+}
+
+function drawPlayer(screen, playerColor, dirColor) {
+
+	let cameraCoords = world.worldToScreen(camera.orientation.position.x - grid.width/2, camera.orientation.position.y - grid.height/2, screen.htmlCanvasElement);
+	let dirVectCoords = world.worldToScreen((camera.orientation.position.x - grid.width/2) + camera.orientation.direction.x, camera.orientation.position.y - grid.height/2 + camera.orientation.direction.y, screen.htmlCanvasElement);
+
+	//draw player
+	screen.drawingContext.beginPath();
+	screen.drawingContext.arc(cameraCoords.x, cameraCoords.y, world.transformLength(0.3), 0,  2*Math.PI);
+	screen.drawingContext.fillStyle = playerColor;
+	screen.drawingContext.fill();
+	screen.drawingContext.closePath();
+
+	// draw direction
+	screen.drawingContext.beginPath();
+	screen.drawingContext.lineTo(cameraCoords.x , cameraCoords.y);
+	screen.drawingContext.lineTo(dirVectCoords.x ,dirVectCoords.y );
+	screen.drawingContext.strokeStyle = dirColor;
+	screen.drawingContext.stroke();
+	screen.drawingContext.closePath();
+	screen.setPixels();
+}
