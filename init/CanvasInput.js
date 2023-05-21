@@ -1,7 +1,9 @@
 let moveSpeed = 0.05;
 let sensitivity = 0.0005
 let mouseIndex = 0;
-
+let mouseWorldCoords;
+let mouseCoords = {};
+let spriteMode = document.getElementById("spritemode");
 // map scene ipnut handling
 screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 	if (mouseDown && keysDown["Shift"]) {
@@ -11,10 +13,11 @@ screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 		grid.transform();
 	}
 
-	let mouseWorldCoords = world.screenToWorld(e.clientX, e.clientY, screen.htmlCanvasElement);
+	mouseCoords = {x:e.clientX, y:e.clientY};
+	mouseWorldCoords = world.screenToWorld(e.clientX, e.clientY, screen.htmlCanvasElement);
 	mouseWorldCoords.x += grid.width / 2;
 	mouseWorldCoords.y += grid.height / 2;
-	mouseIndex = Math.floor(mouseWorldCoords.x) + Math.floor(mouseWorldCoords.y) * grid.width;
+	mouseIndex = Math.floor(mouseWorldCoords.x)+ Math.floor(mouseWorldCoords.y) * grid.width;
 });
 
 screen.htmlCanvasElement.addEventListener("wheel", function(e) {

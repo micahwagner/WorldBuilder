@@ -115,5 +115,13 @@ function drawPlayer(screen, playerColor, dirColor) {
 	screen.drawingContext.strokeStyle = dirColor;
 	screen.drawingContext.stroke();
 	screen.drawingContext.closePath();
-	screen.setPixels();
+
+}
+
+function drawSprite(screen, spritecolor, x, y) {
+	screen.drawingContext.beginPath();
+	screen.drawingContext.arc(x, y, world.transformLength(0.3), 0,  2*Math.PI);
+	screen.drawingContext.stroke();
+	screen.drawingContext.closePath();
+
 }

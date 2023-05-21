@@ -1,11 +1,24 @@
 let frameCount = 0;
 let pastFrameCount = 0;
+let sprites = [];
+
+
+screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
+	if (spriteMode.checked) {
+		let spriteWorldLocation = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement)
+		sprites.push({
+			worldX: spriteWorldLocation.x,
+			worldY: spriteWorldLocation.y,
+			color: "black"
+		});
+	}
+});
 
 function render() {
 	// c.drawingContext.globalAlpha = 0;
 	frameCount++;
 
-	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height) {
+	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height && !spriteMode.checked) {
 
 		if (mouseDown && !keysDown["Shift"]) {
 			if (keysDown["b"]) {
@@ -19,6 +32,7 @@ function render() {
 			}
 		}
 	}
+
 
 	if (keysDown["a"]) {
 		camera.orientation.position.subtract(camera.plane.clone().normalize().scale(moveSpeed));
@@ -46,6 +60,12 @@ function render() {
 
 	drawPlayer(screen, "black", "magenta");
 
+
+	for (var i = 0; i < sprites.length; i++) {
+		let spriteCoords = world.worldToScreen(sprites[i].worldX, sprites[i].worldY, screen.htmlCanvasElement);
+		drawSprite(screen, sprites[i].color, spriteCoords.x, spriteCoords.y);
+	}
+	screen.setPixels();
 	screen.update();
 
 	drawRaycaster();
