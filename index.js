@@ -1,3 +1,4 @@
+//frame information
 let frameCount = 0;
 let pastFrameCount = 0;
 let sprites = [];
