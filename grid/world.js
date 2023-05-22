@@ -31,8 +31,10 @@ world.worldToScreen = function(x, y, canvas) {
 // the functions in this is derived from solving for x in the worldToScreens equations
 world.screenToWorld = function(screenX, screenY, canvas) {
 
-	let worldX = ((screenX - canvas.width / 2) / world.transform.scaleFactor) - (world.transform.originX + canvas.width / 2) + canvas.width/2;
-	let worldY = ((screenY - canvas.height / 2) / world.transform.scaleFactor) - (world.transform.originY + canvas.height / 2) + canvas.height/2;
+	let worldX = (screenX / world.transform.scaleFactor) - (canvas.width / (2 * world.transform.scaleFactor)) - world.transform.originX;
+	let worldY = (screenY / world.transform.scaleFactor) - (canvas.height / (2 * world.transform.scaleFactor)) - world.transform.originY;
+	// let worldX = ((screenX - canvas.width / 2) / world.transform.scaleFactor) - (world.transform.originX + canvas.width / 2) + canvas.width/2;
+	// let worldY = ((screenY - canvas.height / 2) / world.transform.scaleFactor) - (world.transform.originY + canvas.height / 2) + canvas.height/2;
 
 	return {
 		x: worldX,

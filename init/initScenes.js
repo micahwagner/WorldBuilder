@@ -8,7 +8,7 @@ let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
 let grid_width = 50;
 let grid_height = 50;
 let grid = new Grid(grid_width, grid_height, screen);
-grid.data[0] = 0x0000FFFF;
+
 for (var y = 0; y < grid_height; y++) {
 	for (var x = 0; x < grid_width; x++) {
 		let color = colors[Math.floor(Math.random() * 4)];

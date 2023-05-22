@@ -120,7 +120,8 @@ function drawPlayer(screen, playerColor, dirColor) {
 
 function drawSprite(screen, spritecolor, x, y) {
 	screen.drawingContext.beginPath();
-	screen.drawingContext.arc(x, y, world.transformLength(0.3), 0,  2*Math.PI);
+	screen.drawingContext.arc(x, y, world.transformLength(0.1), 0,  2*Math.PI);
+	screen.drawingContext.strokeStyle = spritecolor;
 	screen.drawingContext.stroke();
 	screen.drawingContext.closePath();
 

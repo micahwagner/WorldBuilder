@@ -13,8 +13,8 @@ screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 		grid.transform();
 	}
 
-	mouseCoords = {x:e.clientX, y:e.clientY};
-	mouseWorldCoords = world.screenToWorld(e.clientX, e.clientY, screen.htmlCanvasElement);
+	mouseCoords = {x:e.offsetX, y:e.offsetY};
+	mouseWorldCoords = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement);
 	mouseWorldCoords.x += grid.width / 2;
 	mouseWorldCoords.y += grid.height / 2;
 	mouseIndex = Math.floor(mouseWorldCoords.x)+ Math.floor(mouseWorldCoords.y) * grid.width;

@@ -4,13 +4,15 @@ let sprites = [];
 
 
 screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
-	if (spriteMode.checked) {
+	if (spriteMode.checked && !keysDown["Shift"]) {
 		let spriteWorldLocation = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement)
 		sprites.push({
 			worldX: spriteWorldLocation.x,
 			worldY: spriteWorldLocation.y,
-			color: "black"
+			color: "red"
 		});
+
+		console.log(spriteWorldLocation.x, spriteWorldLocation.y);
 	}
 });
 
