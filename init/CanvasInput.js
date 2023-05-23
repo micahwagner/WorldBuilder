@@ -4,6 +4,31 @@ let mouseIndex = 0;
 let mouseWorldCoords;
 let mouseCoords = {};
 let spriteMode = document.getElementById("spritemode");
+let RValueTextField = document.getElementById("RValue");
+let GValueTextField = document.getElementById("GValue");
+let BValueTextField = document.getElementById("BValue");
+let HValueTextField = document.getElementById("HValue");
+document.getElementById("RValue").value = 1;
+document.getElementById("GValue").value = 1;
+document.getElementById("BValue").value = 1;
+document.getElementById("HValue").value = 1;
+let RValue = 1;
+let GValue = 1;
+let BValue = 1;
+let HValue = 1;
+
+RValueTextField.addEventListener("change", function(e){
+	RValue = parseInt(document.getElementById("RValue").value);
+});
+GValueTextField.addEventListener("change", function(e) {
+	GValue = parseInt(document.getElementById("GValue").value);
+});
+BValueTextField.addEventListener("change", function(e) {
+	BValue = parseInt(document.getElementById("BValue").value);
+});
+HValueTextField.addEventListener("change", function(e) {
+	HValue = parseInt(document.getElementById("HValue").value);
+});
 // map scene ipnut handling
 screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 	if (mouseDown && keysDown["Shift"]) {

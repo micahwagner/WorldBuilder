@@ -9,7 +9,8 @@ screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
 		sprites.push({
 			worldX: spriteWorldLocation.x,
 			worldY: spriteWorldLocation.y,
-			color: "red"
+			color: {R: RValue, G: GValue, B: BValue},
+			height: HValue
 		});
 
 		console.log(spriteWorldLocation.x, spriteWorldLocation.y);
@@ -34,7 +35,6 @@ function render() {
 			}
 		}
 	}
-
 
 	if (keysDown["a"]) {
 		camera.orientation.position.subtract(camera.plane.clone().normalize().scale(moveSpeed));
