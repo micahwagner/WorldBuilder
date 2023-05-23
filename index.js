@@ -2,7 +2,7 @@ let frameCount = 0;
 let pastFrameCount = 0;
 let sprites = [];
 
-
+//
 screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
 	if (spriteMode.checked && !keysDown["Shift"]) {
 		let spriteWorldLocation = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement)
