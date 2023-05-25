@@ -16,6 +16,12 @@ let RValue = 1;
 let GValue = 1;
 let BValue = 1;
 let HValue = 1;
+let PValueTextField = document.getElementById("PValue");
+let PValue = "";
+let PLoad = document.getElementById("LoadPreset");
+let PSave = document.getElementById("SavePreset");
+let presets = {};
+
 
 RValueTextField.addEventListener("change", function(e){
 	RValue = parseInt(document.getElementById("RValue").value);
@@ -29,6 +35,30 @@ BValueTextField.addEventListener("change", function(e) {
 HValueTextField.addEventListener("change", function(e) {
 	HValue = parseInt(document.getElementById("HValue").value);
 });
+PValueTextField.addEventListener("change", function(e) {
+	PValue = document.getElementById("PValue").value;
+});
+PLoad.addEventListener("click", function(e) {
+	RValue = presets[PValue].R;
+	GValue = presets[PValue].G;
+	BValue = presets[PValue].B;
+	HValue = presets[PValue].H;
+
+	RValueTextField.value = presets[PValue].R;
+	GValueTextField.value = presets[PValue].G;
+	BValueTextField.value = presets[PValue].B;
+	HValueTextField.value = presets[PValue].H;
+
+});
+PSave.addEventListener("click", function(e) {
+	presets[PValue] = {
+		R: RValue, 
+		G: GValue, 
+		B: BValue, 
+		H: HValue
+	};
+});
+
 // map scene ipnut handling
 screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 	if (mouseDown && keysDown["Shift"]) {
