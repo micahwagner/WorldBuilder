@@ -1,5 +1,5 @@
 function RGBAToInt(R, G, B, A) {
-	return (R << 8 | G << 8 | B << 8 | A);
+	return (R << 24 | G << 16 | B << 8 | A);
 }
 
 function intToRGBA(num) {
