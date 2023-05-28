@@ -40,8 +40,6 @@ function render() {
 				}, intColor);
 			}
 		}
-
-
 	}
 
 	if (keysDown["a"]) {
