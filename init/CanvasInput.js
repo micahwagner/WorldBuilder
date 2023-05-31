@@ -4,37 +4,60 @@ let mouseIndex = 0;
 let mouseWorldCoords;
 let mouseCoords = {};
 let spriteMode = document.getElementById("spritemode");
-let RValueTextField = document.getElementById("RValue");
-let GValueTextField = document.getElementById("GValue");
-let BValueTextField = document.getElementById("BValue");
-let HValueTextField = document.getElementById("HValue");
-document.getElementById("RValue").value = 1;
-document.getElementById("GValue").value = 1;
-document.getElementById("BValue").value = 1;
-document.getElementById("HValue").value = 1;
-let RValue = 1;
-let GValue = 1;
-let BValue = 1;
-let HValue = 1;
+let worldHeightTextField = document.getElementById("wHeight");
+let worldWidthTextField = document.getElementById("wWidth");
+let createWorldButton = document.getElementById("createWorld");
+let worldHeight = parseInt(worldHeightTextField.value);
+let worldWidth = parseInt(worldWidthTextField.value);
+let HexValueTextField = document.getElementById("HexValue");
+let HeightValueTextField = document.getElementById("HeightValue");
+let HeightValue = parseInt(HeightValueTextField.value);
+let HexValue = hexToInt(HexValueTextField.value);
+let color = intToRGB(HexValue);
 let PValueTextField = document.getElementById("PValue");
 let PValue = "";
 let PLoad = document.getElementById("LoadPreset");
 let PSave = document.getElementById("SavePreset");
 let presets = {};
+let sprites = [];
 
 
-RValueTextField.addEventListener("change", function(e){
-	RValue = parseInt(document.getElementById("RValue").value);
+HexValueTextField.addEventListener("change", function(e) {
+	HexValue = hexToInt(HexValueTextField.value);
+	color = intToRGB(HexValue);
 });
-GValueTextField.addEventListener("change", function(e) {
-	GValue = parseInt(document.getElementById("GValue").value);
+
+HeightValueTextField.addEventListener("change", function(e) {
+	HeightValue = parseInt(HeightValueTextField.value);
 });
-BValueTextField.addEventListener("change", function(e) {
-	BValue = parseInt(document.getElementById("BValue").value);
+
+createWorldButton.addEventListener("click", function(e) {
+
+	let okFlag = confirm("pressing this button resets all world data! Are sure you want to proceed?");
+
+	if (!okFlag) return;
+
+	worldHeight = parseInt(worldHeightTextField.value);
+	worldWidth = parseInt(worldWidthTextField.value);
+	grid = new Grid(worldWidth, worldHeight, screen);
+
+	raycastScene = new Pseudo3D.Scene({
+		worldMap: {
+			data: grid.data,
+			width: grid.width,
+			height: grid.height,
+			cellInfo: {},
+		},
+
+		lighting: {
+			sideShade: 0.3
+		},
+
+	});
+
+	sprites = [];
 });
-HValueTextField.addEventListener("change", function(e) {
-	HValue = parseInt(document.getElementById("HValue").value);
-});
+
 PValueTextField.addEventListener("change", function(e) {
 	PValue = document.getElementById("PValue").value;
 });
@@ -52,9 +75,9 @@ PLoad.addEventListener("click", function(e) {
 });
 PSave.addEventListener("click", function(e) {
 	presets[PValue] = {
-		R: RValue, 
-		G: GValue, 
-		B: BValue, 
+		R: RValue,
+		G: GValue,
+		B: BValue,
 		H: HValue
 	};
 });
@@ -68,11 +91,14 @@ screen.htmlCanvasElement.addEventListener("mousemove", function(e) {
 		grid.transform();
 	}
 
-	mouseCoords = {x:e.offsetX, y:e.offsetY};
+	mouseCoords = {
+		x: e.offsetX,
+		y: e.offsetY
+	};
 	mouseWorldCoords = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement);
 	mouseWorldCoords.x += grid.width / 2;
 	mouseWorldCoords.y += grid.height / 2;
-	mouseIndex = Math.floor(mouseWorldCoords.x)+ Math.floor(mouseWorldCoords.y) * grid.width;
+	mouseIndex = Math.floor(mouseWorldCoords.x) + Math.floor(mouseWorldCoords.y) * grid.width;
 });
 
 screen.htmlCanvasElement.addEventListener("wheel", function(e) {
@@ -87,7 +113,7 @@ screen.htmlCanvasElement.addEventListener("wheel", function(e) {
 
 // raycast mouse handling 
 raycastScreen.htmlCanvasElement.addEventListener("click", async function() {
-	if(!document.pointerLockElement) {
+	if (!document.pointerLockElement) {
 		await raycastScreen.htmlCanvasElement.requestPointerLock({
 			unadjustedMovement: true,
 		});

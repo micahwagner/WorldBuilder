@@ -76,17 +76,18 @@ Grid.prototype.show = function() {
 	let yTerminal = Math.floor(this.screenY + this.pixelHeight);
 	let lineStroke = Math.floor(world.transform.scaleFactor * this.stroke);
 
-	if(lineStroke == 0) return;
+	if (lineStroke == 0) return;
 
 	for (let y = 0; y < this.height + 1; y++) {
-		drawHorizontalLine(Math.floor(this.screenY + world.transform.scaleFactor * y), Math.floor(this.screenX), xTerminal, lineStroke, this.screen);		
+		drawHorizontalLine(Math.floor(this.screenY + world.transform.scaleFactor * y), Math.floor(this.screenX), xTerminal, lineStroke, this.screen);
 	}
 
 	for (let x = 0; x < this.width + 1; x++) {
-		drawVerticalLine(Math.floor(this.screenX + world.transform.scaleFactor * x), Math.floor(this.screenY), yTerminal, lineStroke, this.screen);	
+		drawVerticalLine(Math.floor(this.screenX + world.transform.scaleFactor * x), Math.floor(this.screenY), yTerminal, lineStroke, this.screen);
 	}
 
 };
+
 
 
 function drawBackground(screen, color) {
@@ -98,20 +99,20 @@ function drawBackground(screen, color) {
 
 function drawPlayer(screen, playerColor, dirColor) {
 
-	let cameraCoords = world.worldToScreen(camera.orientation.position.x - grid.width/2, camera.orientation.position.y - grid.height/2, screen.htmlCanvasElement);
-	let dirVectCoords = world.worldToScreen((camera.orientation.position.x - grid.width/2) + camera.orientation.direction.x, camera.orientation.position.y - grid.height/2 + camera.orientation.direction.y, screen.htmlCanvasElement);
+	let cameraCoords = world.worldToScreen(camera.orientation.position.x - grid.width / 2, camera.orientation.position.y - grid.height / 2, screen.htmlCanvasElement);
+	let dirVectCoords = world.worldToScreen((camera.orientation.position.x - grid.width / 2) + camera.orientation.direction.x, camera.orientation.position.y - grid.height / 2 + camera.orientation.direction.y, screen.htmlCanvasElement);
 
 	//draw player
 	screen.drawingContext.beginPath();
-	screen.drawingContext.arc(cameraCoords.x, cameraCoords.y, world.transformLength(0.3), 0,  2*Math.PI);
+	screen.drawingContext.arc(cameraCoords.x, cameraCoords.y, world.transformLength(0.3), 0, 2 * Math.PI);
 	screen.drawingContext.fillStyle = playerColor;
 	screen.drawingContext.fill();
 	screen.drawingContext.closePath();
 
 	// draw direction
 	screen.drawingContext.beginPath();
-	screen.drawingContext.lineTo(cameraCoords.x , cameraCoords.y);
-	screen.drawingContext.lineTo(dirVectCoords.x ,dirVectCoords.y );
+	screen.drawingContext.lineTo(cameraCoords.x, cameraCoords.y);
+	screen.drawingContext.lineTo(dirVectCoords.x, dirVectCoords.y);
 	screen.drawingContext.strokeStyle = dirColor;
 	screen.drawingContext.stroke();
 	screen.drawingContext.closePath();
@@ -122,7 +123,7 @@ function drawSprite(screen, spritecolor, x, y) {
 	screen.drawingContext.beginPath();
 	screen.drawingContext.save();
 	screen.drawingContext.lineWidth = 4;
-	screen.drawingContext.arc(x, y, world.transformLength(0.1), 0,  2*Math.PI);
+	screen.drawingContext.arc(x, y, world.transformLength(0.1), 0, 2 * Math.PI);
 	screen.drawingContext.strokeStyle = `rgb(${spritecolor.R}, ${spritecolor.G}, ${spritecolor.B})`;
 	screen.drawingContext.stroke();
 	screen.drawingContext.closePath();

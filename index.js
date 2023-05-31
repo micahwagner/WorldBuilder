@@ -1,6 +1,6 @@
 let frameCount = 0;
 let pastFrameCount = 0;
-let sprites = [];
+
 
 //
 screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
@@ -10,11 +10,11 @@ screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
 			worldX: spriteWorldLocation.x,
 			worldY: spriteWorldLocation.y,
 			color: {
-				R: RValue,
-				G: GValue,
-				B: BValue
+				R: color.R,
+				G: color.G,
+				B: color.B
 			},
-			height: HValue
+			height: HeightValue
 		});
 
 		console.log(spriteWorldLocation.x, spriteWorldLocation.y);
@@ -28,15 +28,15 @@ function render() {
 	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height && !spriteMode.checked) {
 
 		if (mouseDown && !keysDown["Shift"]) {
-			let intColor = RGBAToInt(RValue, GValue, BValue, 255);
+			let intColor = RGBAToInt(color.R, color.G, color.B, 255);
 
 			if (keysDown[" "]) {
 				grid.data[mouseIndex] = 0;
 			} else {
 				grid.data[mouseIndex] = intColor;
 				raycastScene.add("cellInfo", {
-					appearance: new Pseudo3D.Color(RValue, GValue, BValue, 255),
-					height: HValue
+					appearance: new Pseudo3D.Color(color.R, color.G, color.B, 255),
+					height: HeightValue
 				}, intColor);
 			}
 		}

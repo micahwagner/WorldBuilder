@@ -4,21 +4,21 @@
 	<title></title>
 </head>
 <body>
-
-	<label for="RValue">Red:</label><br>
-	<input type="number" id="RValue" name="RValue" min="1" max="255"><br>
-
-
-	<label for="GValue">Green:</label><br>
-	<input type="number" id="GValue" name="GValue" min="1" max="255"><br>
+   <label for="HexValue">Color:</label>
+   <input type="color" id="HexValue" value="#0000ff">
 
 
-	<label for="BValue">Blue:</label><br>
-	<input type="number" id="BValue" name="BValue" min="1" max="255"><br>
+	<label for="HeightValue">Height:</label><br>
+	<input type="number" id="HeightValue" name="HeightValue" min="0" max="1000000000" value="1"><br>
 
+	<label for="wHeight">world height:</label><br>
+	<input type="number" id="wHeight" name="wHeight" min="1" max="1000000000" value="10"><br>
 
-	<label for="HValue">Height:</label><br>
-	<input type="number" id="HValue" name="HValue" min="0" max="1000000000"><br>
+	<label for="wWidth">world width:</label><br>
+	<input type="number" id="wWidth" name="wWidth" min="1" max="1000000000" value="10"><br>
+
+	<input type="button" id="createWorld" name="createWorld">
+	<label for="createWorld"> Apply </label><br>
 
 
 	<input type="checkbox" id="spritemode" name="spritemode">

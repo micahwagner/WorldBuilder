@@ -4,10 +4,7 @@ let canvasHeight = 700;
 let screen = new Screen(700, 700, 1);
 screen.setParent(document.body);
 let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
-
-let grid_width = 50;
-let grid_height = 50;
-let grid = new Grid(grid_width, grid_height, screen);
+let grid = new Grid(10, 10, screen);
 
 // for (var y = 0; y < grid_height; y++) {
 // 	for (var x = 0; x < grid_width; x++) {
