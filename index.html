@@ -2,39 +2,118 @@
 <html>
 <head>
 	<title></title>
+
+	<style>
+		.ui-container{
+			margin-bottom: 10px;
+		}
+		.ui-box {
+
+  			height: 120px;
+  			background: #d9dbda;
+  			padding: 10px;
+  			display: inline-block;
+  			vertical-align: bottom;
+  			color: #000000;
+		}
+		.ui-box > legend {
+			background: white;
+		}
+
+		.ui-box > select {
+  			appearance: none;
+  			background-color: white;
+  			border: none;
+  			padding: 0 1em 0 0;
+  			margin: 0;
+ 			width: 100%;
+  			font-family: inherit;
+  			font-size: inherit;
+  			cursor: inherit;
+  			line-height: inherit;
+  			height: 70px;			
+		}
+
+		.render-view {
+			display: inline-block;
+			vertical-align: bottom;
+			float: left;
+		}
+    </style>
 </head>
 <body>
-   <label for="HexValue">Color:</label>
-   <input type="color" id="HexValue" value="#0000ff">
+
+<div class="ui-container">
+	    <fieldset class="ui-box" >
+	    	<legend>Create New World</legend>
+	        <label for="wHeight">world height:</label><br>
+			<input type="number" id="wHeight" name="wHeight" min="1" max="1000000000" value="10"><br>
+			<label for="wWidth">world width:</label><br>
+			<input type="number" id="wWidth" name="wWidth" min="1" max="1000000000" value="10"><br>
+			<button type="button" id="createWorld" name="createWorld">Apply</button>
+	    </fieldset>
 
 
-	<label for="HeightValue">Height:</label><br>
-	<input type="number" id="HeightValue" name="HeightValue" min="0" max="1000000000" value="1"><br>
+	    <fieldset class="ui-box">
+	    	<legend>Edit Sprite / Wall type</legend>
+	  		<label for="HexValue">Color:</label>
+	   		<input type="color" id="HexValue" value="#0000ff"><br>
 
-	<label for="wHeight">world height:</label><br>
-	<input type="number" id="wHeight" name="wHeight" min="1" max="1000000000" value="10"><br>
+	   		<label for="HeightValue">Height:</label>
+			<input type="number" id="HeightValue" name="HeightValue" min="0" max="1000000000" value="1"><br>
 
-	<label for="wWidth">world width:</label><br>
-	<input type="number" id="wWidth" name="wWidth" min="1" max="1000000000" value="10"><br>
+			<input type="checkbox" id="spritemode" name="spritemode">
+			<label for="spritemode"> Enable Sprite Mode</label><br>
 
-	<input type="button" id="createWorld" name="createWorld">
-	<label for="createWorld"> Apply </label><br>
-
-
-	<input type="checkbox" id="spritemode" name="spritemode">
-	<label for="spritemode"> Enable Sprite Mode</label><br>
+	    </fieldset>
 
 
-	<input type="button" id="SavePreset" name="SavePreset">
-	<label for="SavePreset"> Save Preset</label><br>
+	    <fieldset class="ui-box">
+	    	<legend>Create New Preset</legend>
+			<button type="button"  id="SavePreset" name="SavePreset">Save</button>
+
+			<button type="button" id="LoadPreset" name="LoadPreset">Load</button>
 
 
-	<input type="button" id="LoadPreset" name="LoadPreset">
-	<label for="LoadPreset"> Load Preset</label><br>
+			<input type="text" id="PValue" name="PValue">
+			<label for="PValue"> Preset Name</label><br>
+
+			<label for="Presets">Choose a Preset:</label>
+			<select name="Presets" id="Presets" multiple>
+    			<option value="volvo">Volvo</option>
+   				<option value="saab">Saab</option>
+   				<option value="opel">Opel</option>
+    			<option value="audi">Audi</option>
+    			<option value="volvo">Volvo</option>
+   				<option value="saab">Saab</option>
+   				<option value="opel">Opel</option>
+    			<option value="audi">Audi</option>
+    			<option value="volvo">Volvo</option>
+   				<option value="saab">Saab</option>
+   				<option value="opel">Opel</option>
+    			<option value="audi">Audi</option>
+    			<option value="volvo">Volvo</option>
+   				<option value="saab">Saab</option>
+   				<option value="opel">Opel</option>
+    			<option value="audi">Audi</option>
+    			<option value="volvo">Volvo</option>
+   				<option value="saab">Saab</option>
+   				<option value="opel">Opel</option>
+    			<option value="audi">Audi</option>
+  			</select>
+
+	    </fieldset>
+</div>
+
+    <div class = "render-view" id = "map">
+
+    </div>
+
+    <div class = "render-view" id = "raycaster">
+
+    </div>
 
 
-	<input type="text" id="PValue" name="PValue">
-	<label for="PValue"> Preset Name</label><br>
 
 
 	<script type="text/javascript" src="/RayCastEngine/pseudo3dmin.js"></script>

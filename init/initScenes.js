@@ -2,7 +2,7 @@ let canvasWidth = 700;
 let canvasHeight = 700;
 
 let screen = new Screen(700, 700, 1);
-screen.setParent(document.body);
+screen.setParent(document.getElementById("map"));
 let colors = [0xFF0000FF, 0x00FF00FF, 0x0000FFFF, 0xFFFF00FF];
 let grid = new Grid(10, 10, screen);
 
@@ -29,7 +29,7 @@ let raycastScene = new Pseudo3D.Scene({
 
 let raycastScreen = new Pseudo3D.Screen(700, 700, 0.5);
 
-raycastScreen.setParent(document.body);
+raycastScreen.setParent(document.getElementById("raycaster"));
 
 let camera = new Pseudo3D.Camera({
 	position: {
