@@ -2,19 +2,21 @@ let frameCount = 0;
 let pastFrameCount = 0;
 
 
+
+
 //
 screen.htmlCanvasElement.addEventListener("mouseup", function(e) {
-	if (spriteMode.checked && !keysDown["Shift"]) {
+	if (spriteMode.checked && !keysDown["Shift"] && presets.selectedIndex != -1) {
 		let spriteWorldLocation = world.screenToWorld(mouseCoords.x, mouseCoords.y, screen.htmlCanvasElement)
-		sprites.push({
+		spriteObjects.push({
 			worldX: spriteWorldLocation.x,
 			worldY: spriteWorldLocation.y,
 			color: {
-				R: color.R,
-				G: color.G,
-				B: color.B
+				R: presetValue.R,
+				G: presetValue.G,
+				B: presetValue.B
 			},
-			height: HeightValue
+			height: presetValue.H
 		});
 
 		console.log(spriteWorldLocation.x, spriteWorldLocation.y);
@@ -25,18 +27,18 @@ function render() {
 	// c.drawingContext.globalAlpha = 0;
 	frameCount++;
 
-	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height && !spriteMode.checked) {
+	if (mouseIndex > 0 && mouseIndex < grid.width * grid.height && !spriteMode.checked && presets.selectedIndex != -1) {
 
 		if (mouseDown && !keysDown["Shift"]) {
-			let intColor = RGBAToInt(color.R, color.G, color.B, 255);
+			let intColor = RGBAToInt(presetValue.R, presetValue.G, presetValue.B, 255);
 
 			if (keysDown[" "]) {
 				grid.data[mouseIndex] = 0;
 			} else {
 				grid.data[mouseIndex] = intColor;
 				raycastScene.add("cellInfo", {
-					appearance: new Pseudo3D.Color(color.R, color.G, color.B, 255),
-					height: HeightValue
+					appearance: new Pseudo3D.Color(presetValue.R, presetValue.G, presetValue.B, 255),
+					height: presetValue.H
 				}, intColor);
 			}
 		}
@@ -69,9 +71,9 @@ function render() {
 	drawPlayer(screen, "black", "magenta");
 
 
-	for (var i = 0; i < sprites.length; i++) {
-		let spriteCoords = world.worldToScreen(sprites[i].worldX, sprites[i].worldY, screen.htmlCanvasElement);
-		drawSprite(screen, sprites[i].color, spriteCoords.x, spriteCoords.y);
+	for (var i = 0; i < spriteObjects.length; i++) {
+		let spriteCoords = world.worldToScreen(spriteObjects[i].worldX, spriteObjects[i].worldY, screen.htmlCanvasElement);
+		drawSprite(screen, spriteObjects[i].color, spriteCoords.x, spriteCoords.y);
 	}
 	screen.setPixels();
 	screen.update();

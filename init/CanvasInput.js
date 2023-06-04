@@ -16,11 +16,44 @@ let HexValue = hexToInt(HexValueTextField.value);
 let color = intToRGB(HexValue);
 let PValueTextField = document.getElementById("PValue");
 let PValue = "";
-let PLoad = document.getElementById("LoadPreset");
 let PSave = document.getElementById("SavePreset");
-let presets = {};
 let sprites = [];
+let walls = [];
+let spriteObjects =[];
+let presets = document.getElementById("Presets");
+let newOption = new Option("default", "value");
+walls.push({
+	newOption,
+	values: {
+		R: color.R,
+		G: color.G,
+		B: color.B,
+		H: HeightValue
+	}
+});
 
+sprites.push({
+	newOption,
+	values: {
+		R: color.R,
+		G: color.G,
+		B: color.B,
+		H: HeightValue
+	}
+});
+
+renderPresets(spriteMode.checked);
+let presetValue;
+
+
+
+presets.addEventListener("change", function(e) {
+	if(!spriteMode.checked){
+		presetValue = walls[presets.selectedIndex].values;
+	} else {
+		presetValue = sprites[presets.selectedIndex].values;
+	}
+});
 
 HexValueTextField.addEventListener("change", function(e) {
 	HexValue = hexToInt(HexValueTextField.value);
@@ -28,7 +61,7 @@ HexValueTextField.addEventListener("change", function(e) {
 });
 
 HeightValueTextField.addEventListener("change", function(e) {
-	HeightValue = parseInt(HeightValueTextField.value);
+	HeightValue = parseFloat(HeightValueTextField.value);
 });
 
 createWorldButton.addEventListener("click", function(e) {
@@ -55,31 +88,75 @@ createWorldButton.addEventListener("click", function(e) {
 
 	});
 
-	sprites = [];
+	spriteObjects = [];
+});
+
+spriteMode.addEventListener("change", function(e) {
+	renderPresets(spriteMode.checked);
 });
 
 PValueTextField.addEventListener("change", function(e) {
 	PValue = document.getElementById("PValue").value;
 });
-PLoad.addEventListener("click", function(e) {
-	RValue = presets[PValue].R;
-	GValue = presets[PValue].G;
-	BValue = presets[PValue].B;
-	HValue = presets[PValue].H;
 
-	RValueTextField.value = presets[PValue].R;
-	GValueTextField.value = presets[PValue].G;
-	BValueTextField.value = presets[PValue].B;
-	HValueTextField.value = presets[PValue].H;
-
-});
 PSave.addEventListener("click", function(e) {
-	presets[PValue] = {
-		R: RValue,
-		G: GValue,
-		B: BValue,
-		H: HValue
-	};
+	let newOption = new Option(PValue, "value");
+
+	let spriteFoundIndex = sprites.findIndex(e => e.newOption.outerText == PValue);
+	let wallFoundIndex = walls.findIndex(e => e.newOption.outerText == PValue);
+
+	console.log(walls);
+
+	if (spriteMode.checked) {
+		if (spriteFoundIndex == -1) {
+			sprites.push({
+				newOption,
+				values: {
+					R: color.R,
+					G: color.G,
+					B: color.B,
+					H: HeightValue
+				}
+			});
+		} else {
+			sprites[spriteFoundIndex] = {
+				newOption,
+				values: {
+					R: color.R,
+					G: color.G,
+					B: color.B,
+					H: HeightValue
+				}
+			};
+		}
+	} else {
+		if (wallFoundIndex == -1) {
+			walls.push({
+				newOption,
+				values: {
+					R: color.R,
+					G: color.G,
+					B: color.B,
+					H: HeightValue
+				}
+			});
+		} else {
+			walls[wallFoundIndex] = {
+				newOption,
+				values: {
+					R: color.R,
+					G: color.G,
+					B: color.B,
+					H: HeightValue
+				}
+			};
+		}
+	}
+
+	console.log(walls);
+
+	renderPresets(spriteMode.checked);
+
 });
 
 // map scene ipnut handling
@@ -140,6 +217,26 @@ function updateRaycastScene(e) {
 		let angle = Pseudo3D.Math.remap(mouseX, 0, raycastScreen.width, -Math.PI / 2, Math.PI / 2);
 		camera.setRotation(angle);
 		camera.pitch = (raycastScreen.height / 2 - mouseY) * 0.5;
+	}
+}
+
+function renderPresets(isSpriteMode) {
+	let index = presets.options.length;
+	while (index--) {
+		presets.remove(index);
+	}
+
+	let i = 0;
+	if (isSpriteMode) {
+		while (i < sprites.length) {
+			presets.add(sprites[i].newOption);
+			i++;
+		}
+	} else {
+		while (i < walls.length) {
+			presets.add(walls[i].newOption);
+			i++;
+		}
 	}
 }
 
